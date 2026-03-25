@@ -1,18 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/Home/home.dart';
+import 'package:flutter_application_3/main.dart';
 
 class AddPage extends StatefulWidget {
-  final Task? task;
+  final Task? task; 
 
   const AddPage({super.key, this.task});
 
   @override
-  State<AddPage> createState() => _AddPageState();
+  State<AddPage> createState() => Taskdetailpage();
 }
 
-class _AddPageState extends State<AddPage> {
+class Taskdetailpage extends State<AddPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _controller;
+  String _infoMessage = '';
+  Color _messageColor = Colors.green;
 
   @override
   void initState() {
@@ -31,10 +34,9 @@ class _AddPageState extends State<AddPage> {
       Navigator.pop(context, _controller.text);
     }
   }
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+ Widget build(BuildContext context) {
+   return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.task == null ? "Новая задача" : "Редактировать"),
@@ -50,6 +52,7 @@ class _AddPageState extends State<AddPage> {
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40),
                 TextFormField(
@@ -68,7 +71,13 @@ class _AddPageState extends State<AddPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 12),
+                if (_infoMessage.isNotEmpty)
+                  Text(
+                    _infoMessage,
+                    style: TextStyle(color: _messageColor, fontWeight: FontWeight.w500),
+                  ),
+                const SizedBox(height: 40), 
                 ElevatedButton(
                   onPressed: _saveTask,
                   style: ElevatedButton.styleFrom(
@@ -79,7 +88,7 @@ class _AddPageState extends State<AddPage> {
                     ),
                   ),
                   child: Text(
-                    widget.task == null ? "Сохранить" : "Обновить",
+                    widget.task == null ? "Сохранить" : "Oбновить",
                     style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),

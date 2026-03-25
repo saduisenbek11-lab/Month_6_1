@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/Add/add.dart';
 import 'package:flutter_application_3/nastroyki/Themepracticeappstate.dart';
@@ -10,8 +9,8 @@ class Task {
   bool isDone;
   Task({required this.name, this.isDone = false});
 }
+
 class MyHomePage extends StatefulWidget {
-  
   const MyHomePage({super.key, required this.title});
   final String title;
 
@@ -20,24 +19,48 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
-  late final  cubit ;
   List<Task> tasks = [];
- @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      centerTitle: true,
-      title: Text(
-        widget.title,
-        style: const TextStyle(),
+
+  void _naviagateToAddPage() async {
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(builder: (_) => const AddPage()),
+    );
+
+    if (result != null && result.isNotEmpty) {
+      setState(() {
+        tasks.add(Task(name: result, isDone: false));
+      });
+    }
+  }
+
+  void _editTask(int index) async {
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AddPage(task: tasks[index]),
       ),
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0),
-        child: Container(color: Colors.black, height: 1.0),
+    );
+
+    if (result != null && result.isNotEmpty) {
+      setState(() {
+        tasks[index].name = result;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(widget.title),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(color: Colors.black, height: 1.0),
+        ),
       ),
-    ),
-    drawer: PageNastroiki(title: widget.title),
+      drawer: PageNastroiki(title: widget.title),
       body: Column(
         children: [
           const SizedBox(height: 20),
@@ -46,71 +69,84 @@ Widget build(BuildContext context) {
               padding: const EdgeInsets.all(16),
               itemCount: tasks.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
+                return Dismissible(
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
                     setState(() {
-                      tasks[index].isDone = !tasks[index].isDone;
+                      tasks.removeAt(index);
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Задача удалена")),
+                    );
                   },
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 4, 136, 252),
-                    borderRadius: BorderRadius.circular(12),
+                  background: Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(Icons.delete, color: Colors.white),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        tasks[index].isDone
-                            ? Icons.check_box
-                            : Icons.check_box_outline_blank,
-                        color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () => _editTask(index),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 4, 136, 252),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          tasks[index].name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              tasks[index].isDone
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                tasks[index].isDone = !tasks[index].isDone;
+                              });
+                            },
                           ),
-                          
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ), 
-        ),
-      ],
-    ),
-    floatingActionButton: FloatingActionButton.extended(
-      onPressed: _naviagateToAddPage,
-      label: const Text("Добавить задачу"),
-      backgroundColor: Colors.blue,
-      icon: const Icon(Icons.add),
-    ),
-    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-  );
-}
-
-void _naviagateToAddPage() async {
-  final result = await Navigator.push<String>(
-    context,
-    MaterialPageRoute(builder: (_) => const AddPage()),
-  );
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              tasks[index].name,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
   
-  if (result != null && result.isNotEmpty) {
-    setState(() {
-      tasks.add(Task(name: result));
-    });
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _naviagateToAddPage,
+        label: const Text("Добавить задачу"),
+        backgroundColor: Colors.blue,
+        icon: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 }
-}class PageNastroiki extends StatelessWidget {
+
+class PageNastroiki extends StatelessWidget {
   final String title;
   const PageNastroiki({super.key, required this.title});
 
@@ -122,17 +158,18 @@ void _naviagateToAddPage() async {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
-              color: isDark ? const Color.fromARGB(255, 255, 255, 255) : const Color.fromARGB(255, 255, 255, 255),
+              color: Colors.blue,
             ),
-            child: const Text(
+            child: Text(
               "Меню",
-              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 18),
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ),
           ListTile(
-            leading: Icon(Icons.settings, color: isDark ? Colors.white : const Color.fromARGB(221, 0, 0, 0)),
+            leading: Icon(Icons.settings,
+                color: isDark ? Colors.white : Colors.black),
             title: const Text('Настройки'),
             onTap: () {
               Navigator.pop(context);

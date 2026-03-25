@@ -1,0 +1,184 @@
+[
+  {
+    "level_": 0,
+    "message_": "Start JSON generation. Platform version: 35 min SDK version: x86",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "rebuilding JSON C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\.cxx\\Debug\\g3zo5v24\\x86\\android_gradle_build.json due to:",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "- no fingerprint file, will remove stale configuration folder",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "@echo off\n\"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\\\\bin\\\\java\" ^\n  --enable-native-access ^\n  ALL-UNNAMED ^\n  --class-path ^\n  \"C:\\\\Users\\\\user\\\\.gradle\\\\caches\\\\modules-2\\\\files-2.1\\\\com.google.prefab\\\\cli\\\\2.1.0\\\\aa32fec809c44fa531f01dcfb739b5b3304d3050\\\\cli-2.1.0-all.jar\" ^\n  com.google.prefab.cli.AppKt ^\n  --build-system ^\n  cmake ^\n  --platform ^\n  android ^\n  --abi ^\n  x86 ^\n  --os-version ^\n  35 ^\n  --stl ^\n  c++_static ^\n  --ndk-version ^\n  28 ^\n  --output ^\n  \"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Temp\\\\agp-prefab-staging3453134984974178195\\\\staged-cli-output\" ^\n  \"C:\\\\Users\\\\user\\\\.gradle\\\\caches\\\\9.3.1\\\\transforms\\\\d89189cf1bb462d02326088e419c8206\\\\workspace\\\\transformed\\\\games-activity-4.0.0\\\\prefab\"\n",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "Received process result: 0",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "removing stale contents from \u0027C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\.cxx\\Debug\\g3zo5v24\\x86\u0027",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "created folder \u0027C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\.cxx\\Debug\\g3zo5v24\\x86\u0027",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "executing cmake @echo off\n\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\cmake\\\\3.22.1\\\\bin\\\\cmake.exe\" ^\n  \"-HC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\src\\\\main\\\\cpp\" ^\n  \"-DCMAKE_SYSTEM_NAME\u003dAndroid\" ^\n  \"-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\" ^\n  \"-DCMAKE_SYSTEM_VERSION\u003d35\" ^\n  \"-DANDROID_PLATFORM\u003dandroid-35\" ^\n  \"-DANDROID_ABI\u003dx86\" ^\n  \"-DCMAKE_ANDROID_ARCH_ABI\u003dx86\" ^\n  \"-DANDROID_NDK\u003dC:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\28.2.13676358\" ^\n  \"-DCMAKE_ANDROID_NDK\u003dC:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\28.2.13676358\" ^\n  \"-DCMAKE_TOOLCHAIN_FILE\u003dC:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\28.2.13676358\\\\build\\\\cmake\\\\android.toolchain.cmake\" ^\n  \"-DCMAKE_MAKE_PROGRAM\u003dC:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\cmake\\\\3.22.1\\\\bin\\\\ninja.exe\" ^\n  \"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\build\\\\intermediates\\\\cxx\\\\Debug\\\\g3zo5v24\\\\obj\\\\x86\" ^\n  \"-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003dC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\build\\\\intermediates\\\\cxx\\\\Debug\\\\g3zo5v24\\\\obj\\\\x86\" ^\n  \"-DCMAKE_BUILD_TYPE\u003dDebug\" ^\n  \"-DCMAKE_FIND_ROOT_PATH\u003dC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\.cxx\\\\Debug\\\\g3zo5v24\\\\prefab\\\\x86\\\\prefab\" ^\n  \"-BC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\.cxx\\\\Debug\\\\g3zo5v24\\\\x86\" ^\n  -GNinja\n",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "@echo off\n\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\cmake\\\\3.22.1\\\\bin\\\\cmake.exe\" ^\n  \"-HC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\src\\\\main\\\\cpp\" ^\n  \"-DCMAKE_SYSTEM_NAME\u003dAndroid\" ^\n  \"-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\" ^\n  \"-DCMAKE_SYSTEM_VERSION\u003d35\" ^\n  \"-DANDROID_PLATFORM\u003dandroid-35\" ^\n  \"-DANDROID_ABI\u003dx86\" ^\n  \"-DCMAKE_ANDROID_ARCH_ABI\u003dx86\" ^\n  \"-DANDROID_NDK\u003dC:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\28.2.13676358\" ^\n  \"-DCMAKE_ANDROID_NDK\u003dC:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\28.2.13676358\" ^\n  \"-DCMAKE_TOOLCHAIN_FILE\u003dC:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\28.2.13676358\\\\build\\\\cmake\\\\android.toolchain.cmake\" ^\n  \"-DCMAKE_MAKE_PROGRAM\u003dC:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\cmake\\\\3.22.1\\\\bin\\\\ninja.exe\" ^\n  \"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\build\\\\intermediates\\\\cxx\\\\Debug\\\\g3zo5v24\\\\obj\\\\x86\" ^\n  \"-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003dC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\build\\\\intermediates\\\\cxx\\\\Debug\\\\g3zo5v24\\\\obj\\\\x86\" ^\n  \"-DCMAKE_BUILD_TYPE\u003dDebug\" ^\n  \"-DCMAKE_FIND_ROOT_PATH\u003dC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\.cxx\\\\Debug\\\\g3zo5v24\\\\prefab\\\\x86\\\\prefab\" ^\n  \"-BC:\\\\Users\\\\user\\\\Desktop\\\\Lib\\\\control_3_1\\\\flutter_application_3\\\\app\\\\.cxx\\\\Debug\\\\g3zo5v24\\\\x86\" ^\n  -GNinja\n",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "Received process result: 0",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "Exiting generation of C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\.cxx\\Debug\\g3zo5v24\\x86\\compile_commands.json.bin normally",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "done executing cmake",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "hard linked C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\.cxx\\Debug\\g3zo5v24\\x86\\compile_commands.json to C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\.cxx\\tools\\debug\\x86\\compile_commands.json",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "JSON generation completed without problems",
+    "file_": "C:\\Users\\user\\Desktop\\Lib\\control_3_1\\flutter_application_3\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  }
+]

@@ -1,94 +1,92 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/Ekran/second.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_application_3/Home/home.dart';
 
 class First extends StatelessWidget {
   const First({super.key});
 
+  Future<void> _skipOnboarding(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSeen', true);
+
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const MyHomePage(title: 'Ваши задачи')),
+        (route) => false,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
-  centerTitle: true,
-  title: const Text(
-    "                                                               Пропустить",
-    style: TextStyle(
-      color: Color.fromARGB(148, 164, 161, 161),
-    ),
-  ),
-  bottom: PreferredSize(
-    preferredSize: const Size.fromHeight(1.0),
-    child: Container(color: const Color.fromARGB(187, 50, 49, 49), height: 1.0),
-  ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset('images/Lini.jpg',
-             width: 200, 
-             height: 200, 
-             fit: BoxFit.cover, ),
-            SizedBox(height: 10),
-            Text(
-              "Todolist",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold,),
+      appBar: AppBar(
+        actions: [
+          TextButton(
+            onPressed: () => _skipOnboarding(context),
+            child: const Text(
+              "Пропустить",
+              style: TextStyle(color: Color.fromARGB(148, 164, 161, 161)),
             ),
-            SizedBox(height: 10),
-            Text(
-              "Добро пожаловать!",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500,),
-            ),
-            SizedBox(height: 5),
-            Text(
-              "Oрганизуйте свою жизнь",
-              style: TextStyle(fontSize: 22, color: Color.fromARGB(172, 81, 80, 80), height: 1.3),
-            ),
-            Text(
-              "с Todolist-приложение для ",
-              style: TextStyle(fontSize: 22, color: Color.fromARGB(172, 81, 80, 80), height: 1.3),
-            ),
-            Text(
-              "управления задачами",
-              style: TextStyle(fontSize: 22, color: Color.fromARGB(172, 81, 80, 80), height: 1.3),
-            ),
-            SizedBox(height: 10),
-            Image.asset('images/twin.jpg',
-             width: 250, 
-             height: 200, 
-             fit: BoxFit.cover, ),
-          ]
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+              color: const Color.fromARGB(187, 50, 49, 49), height: 1.0),
         ),
       ),
- floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end, 
-          children: [
-            ElevatedButton.icon(
-              onPressed: () => _navigateToSecond(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('images/Lini.jpg',
+                  width: 200, height: 200, fit: BoxFit.cover),
+              const SizedBox(height: 10),
+              const Text("Todolist",
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+              const Text("Добро пожаловать!",
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 15),
+              const Text(
+                "Организуйте свою жизнь\nс Todolist-приложение для\nуправления задачами",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color.fromARGB(172, 81, 80, 80),
+                    height: 1.3),
               ),
-              icon: const Icon(Icons.arrow_forward),
-              label: const Text("Далее", style: TextStyle(fontSize: 18)),
-            ),
-          ], 
-        ), 
-      ), 
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-
-  void _navigateToSecond(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Second()),
+              const SizedBox(height: 20),
+              Image.asset('images/twin.jpg',
+                  width: 250, height: 200, fit: BoxFit.cover),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: ElevatedButton.icon(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Second()),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          icon: const Icon(Icons.arrow_forward),
+          label: const Text("Далее", style: TextStyle(fontSize: 18)),
+        ),
+      ),
     );
   }
 }

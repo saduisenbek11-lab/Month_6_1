@@ -1,39 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'nastroyki/Themepracticeappstate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_application_3/Home/home.dart';
 import 'package:flutter_application_3/Ekran/first.dart';
+import 'package:flutter_application_3/nastroyki/Themepracticeappstate.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  final prefs = await SharedPreferences.getInstance();
+  final bool isSeen = prefs.getBool('isSeen') ?? false;
 
-void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => Themepracticeappstate(),
-      child: const MyApp(),
+      create: (_) => Themepracticeappstate(),
+      child: MyApp(showHome: isSeen),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool showHome;
+  const MyApp({super.key, required this.showHome});
 
   @override
   Widget build(BuildContext context) {
-    final themeState = Provider.of<Themepracticeappstate>(context);
+    final isDark = Provider.of<Themepracticeappstate>(context).isDark;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: themeState.thememode,
-      theme: ThemeData(useMaterial3: true, brightness: Brightness.light),
-      darkTheme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
-    
-      home: const First(), 
+      title: 'Ваши задачи',
+      theme: isDark ? ThemeData.dark() : ThemeData.light(),
+      home: showHome 
+          ? const MyHomePage(title: 'Ваши задачи') 
+          : const First(),
     );
   }
 }
-class Task {
-  final String name;
-  final String title;
-  bool isDone;
-  Task({required this.name, this.isDone = false, required this.title});
-}
 
+class Task {
+  String name;
+  bool isDone;
+
+  Task({required this.name, this.isDone = false});
+}
