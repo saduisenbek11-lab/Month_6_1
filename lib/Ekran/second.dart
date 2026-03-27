@@ -15,7 +15,7 @@ class Second extends StatelessWidget {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (context) => const MyHomePage(title: 'Todolist')),
+            builder: (context) => const MyHomePage(title: 'Ваши задачи')),
         (route) => false,
       );
     }

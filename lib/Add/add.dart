@@ -37,7 +37,7 @@ class _AddPageState extends State<AddPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(widget.task == null ? "Новая задача" : "Редактировать"),
+        title: Text("Новая задача" ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(color: Colors.black12, height: 1.0),
@@ -79,7 +79,7 @@ class _AddPageState extends State<AddPage> {
                     ),
                   ),
                   child: Text(
-                    widget.task == null ? "Сохранить" : "Обновить",
+                    "Сохранить",
                     style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
