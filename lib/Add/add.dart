@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/Home/home.dart';
-
+import 'package:flutter_application_3/DataBase/app_database.dart';
 class AddPage extends StatefulWidget {
-  final Task? task;
-
+final Todo? task;
+ 
   const AddPage({super.key, this.task});
 
   @override

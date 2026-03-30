@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter_application_3/DataBase/app_database.dart';
-import 'package:flutter_application_3/main.dart';
-
+import 'package:provider/provider.dart';
 class AddPage extends StatefulWidget {
-  final Task? task; 
+  final Todo? task; 
 
   const AddPage({super.key, this.task});
 
@@ -17,7 +16,7 @@ class Taskdetailpage extends State<AddPage> {
   late TextEditingController _controller;
   String _infoMessage = '';
   Color _messageColor = Colors.green;
-
+ 
   @override
   void initState() {
     super.initState();
@@ -28,6 +27,13 @@ class Taskdetailpage extends State<AddPage> {
     _controller.dispose();
     super.dispose();
   }
+  void _deleteTodo() async {
+  if (widget.task != null) {
+    final database = Provider.of<AppDatabase>(context, listen: false);
+    await database.deleteTodo(widget.task!.id); 
+    Navigator.pop(context); 
+  }
+}
 
   void _saveTask() {
     if (_formKey.currentState!.validate()) {
@@ -40,6 +46,13 @@ class Taskdetailpage extends State<AddPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.task == null ? "Новая задача" : "Редактировать"),
+        actions: [
+        if (widget.task != null)
+          IconButton(
+            icon: const Icon(Icons.delete, color: Colors.red),
+            onPressed: _deleteTodo, 
+          ),
+      ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(color: Colors.black12, height: 1.0),
@@ -99,4 +112,6 @@ class Taskdetailpage extends State<AddPage> {
       ),
     );
   }
+ 
 }
+ 

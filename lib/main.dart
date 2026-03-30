@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/DataBase/app_database.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_3/Home/home.dart';
@@ -7,15 +8,17 @@ import 'package:flutter_application_3/nastroyki/Themepracticeappstate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+  final database = AppDatabase(); 
   final prefs = await SharedPreferences.getInstance();
   final bool isSeen = prefs.getBool('isSeen') ?? false;
-
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => Themepracticeappstate(),
+   MultiProvider( // для нескольких объектов
+      providers: [
+        ChangeNotifierProvider(create: (_) => Themepracticeappstate()),
+        Provider<AppDatabase>.value(value: database), // 
+      ],
       child: MyApp(showHome: isSeen),
-    ),
+    ), 
   );
 }
 

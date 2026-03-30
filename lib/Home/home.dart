@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_application_3/Add/add.dart';
+import 'package:flutter_application_3/DataBase/app_database.dart';
 import 'package:flutter_application_3/nastroyki/Themepracticeappstate.dart';
 import 'package:flutter_application_3/nastroyki/nastroyki.dart';
-import 'package:provider/provider.dart';
-
-class Task {
-  String name;
-  bool isDone;
-  Task({required this.name, this.isDone = false});
-}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -19,38 +14,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Task> tasks = [];
-
-  void _naviagateToAddPage() async {
-    final result = await Navigator.push<String>(
+    void _naviagateToAddPage() {
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const AddPage()),
     );
-
-    if (result != null && result.isNotEmpty) {
-      setState(() {
-        tasks.add(Task(name: result, isDone: false));
-      });
-    }
   }
-
-  void _editTask(int index) async {
-    final result = await Navigator.push<String>(
+  void _editTask(Todo task) {
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => AddPage(task: tasks[index]),
+        builder: (_) => AddPage(task: task),
       ),
     );
-
-    if (result != null && result.isNotEmpty) {
-      setState(() {
-        tasks[index].name = result;
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<AppDatabase>(context);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -65,70 +47,79 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           const SizedBox(height: 20),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                return Dismissible(
-                  key: UniqueKey(),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    setState(() {
-                      tasks.removeAt(index);
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Задача удалена")),
+            child: StreamBuilder<List<Todo>>(
+              stream: database.select(database.todos).watch(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final tasks = snapshot.data ?? [];
+
+                if (tasks.isEmpty) {
+                  return const Center(child: Text("Задач пока нет"));
+                }
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: tasks.length,
+                  itemBuilder: (context, index) {
+
+                    final item = tasks[index];
+
+                    return Dismissible(
+                      key: Key(item.id.toString()), 
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        database.deleteTodo(item.id); 
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Задача удалена")),
+                        );
+                      },
+                      background: Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      child: GestureDetector(
+                        onTap: () => _editTask(item),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 4, 136, 252),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.check_box_outline_blank, 
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  item.name,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     );
                   },
-                  background: Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 20),
-                    child: const Icon(Icons.delete, color: Colors.white),
-                  ),
-                  child: GestureDetector(
-                    onTap: () => _editTask(index),
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 4, 136, 252),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              tasks[index].isDone
-                                  ? Icons.check_box
-                                  : Icons.check_box_outline_blank,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                tasks[index].isDone = !tasks[index].isDone;
-                              });
-                            },
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              tasks[index].name,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-  
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                 );
               },
             ),
