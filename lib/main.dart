@@ -2,8 +2,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_88/features/quiz/data/repositories/repository.dart';
 import 'package:flutter_application_88/features/quiz/presentation/cubit/quiz_cubit.dart';
-import 'features/quiz/presentation/pages/quiz_home_page.dart';
-import 'features/quiz/presentation/pages/quiz_setup_page.dart';
+import 'ui/pages/quiz_home_page.dart';
+import 'ui/pages/quiz_setup_page.dart';
 
 const Map<String, int?> categoryIds = {
   'All': null,
