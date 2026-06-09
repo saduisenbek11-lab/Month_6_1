@@ -119,27 +119,59 @@ class _QuizSecondPageState extends State<QuizSecondPage> {
                           ...List.generate(_cachedAnswers.length, (index) {
                             return _buildAnswerButton(_cachedAnswers[index], state);
                           }),
-                          const SizedBox(height: 28),
-                          SizedBox(
-                            width: 160,
-                            height: 44,
-                            child: FilledButton(
-                              style: FilledButton.styleFrom(
-                                backgroundColor: const Color(0xFFFF5E87),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                              ),
-                              onPressed: () => _moveToNextQuestion(state),
-                              child: Text(
-                                isLastQuestion ? 'Завершить' : 'Следующий',
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                           const SizedBox(height: 28),
+                          if (!isLastQuestion)
+                           SizedBox(
+                           width: 160,
+                           height: 44,
+                       child: FilledButton(
+                         style: FilledButton.styleFrom(
+                           backgroundColor: const Color(0xFFFF5E87),
+                           shape: RoundedRectangleBorder(
+                         borderRadius: BorderRadius.circular(24),
+                        ),
                     ),
-                  ),
-                ],
+                 onPressed: () {
+              _moveToNextQuestion(state);
+              },
+             child: const Text(
+          'Следующий',
+         style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  ),
+
+if (isLastQuestion)
+  SizedBox(
+    width: 160,
+    height: 44,
+    child: FilledButton(
+      style: FilledButton.styleFrom(
+        backgroundColor: Colors.green,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+      ),
+      onPressed: () {
+        _finishQuiz(state);
+      },
+      child: const Text(
+        'Завершить',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      ),
+     ),
+        ],
+         ),
+          ),
+             ),
+             ],
               );
             },
           ),
@@ -166,12 +198,16 @@ Future<void> _finishQuiz(QuizState state) async {
       final percent = total > 0 ? ((correct / total) * 100).toInt() : 0;
 
       try {
-        await appDatabase.insertResult(ResultsCompanion.insert(
-          category: widget.category,
-          difficulty: widget.difficulty.isEmpty ? const Value.absent() : Value(widget.difficulty),
-          totalQuestions: total,
-          correctAnswers: correct,
-        ));
+      appDatabase.insertResult(
+  ResultsCompanion.insert(
+    category: widget.category,
+    difficulty: widget.difficulty.isEmpty
+        ? const Value.absent()
+        : Value(widget.difficulty),
+    totalQuestions: total,
+    correctAnswers: correct,
+  ),
+);
       } catch (databaseError) {
         debugPrint("!!! Ошибка базы данных Drift: $databaseError");
       }
@@ -240,18 +276,20 @@ Future<void> _finishQuiz(QuizState state) async {
             elevation: 0,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           ),
-          onPressed: hasAnswered
-              ? null
-              : () {
-                  setState(() {
-                    _selectedAnswers[_currentQuestion] = answerText;
-                  });
+         onPressed: hasAnswered
+    ? null
+    : () {
+        setState(() {
+          _selectedAnswers[_currentQuestion] = answerText;
+        });
 
-                  Future.delayed(const Duration(milliseconds: 600), () {
-                    if (!mounted) return;
-                    _moveToNextQuestion(state);
-                  });
-                },
+        if (!(_currentQuestion >= state.questions.length - 1)) {
+          Future.delayed(const Duration(milliseconds: 600), () {
+            if (!mounted) return;
+            _moveToNextQuestion(state);
+          });
+        }
+      },
           child: Text(
             answerText,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
