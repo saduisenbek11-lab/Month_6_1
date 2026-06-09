@@ -1,4 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+const Map<String, int?> categoryIds = {
+  'All': null,
+  'Math': 19,
+  'Science': 17,
+  'History': 23,
+  'Geography': 22,
+};
+
+const Map<String, String?> difficultyValues = {
+  'All': null,
+  'Easy': 'easy',
+  'Medium': 'medium',
+  'Hard': 'hard',
+};
 
 class QuizSetupPage extends StatefulWidget {
   const QuizSetupPage({super.key});
@@ -45,7 +61,7 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       )
@@ -55,34 +71,43 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Center(
-                        child: Container(
-                          height: 130,
-                          width: 130,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFD8C2FF), Color(0xFF8E6CFF)],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                            borderRadius: BorderRadius.circular(32),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF8E6CFF).withOpacity(0.25),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.quiz_outlined,
-                              size: 54,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
+         child: Container(
+         height: 130,
+    width: 130,
+     decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        colors: [Color(0xFFD8C2FF), Color(0xFF8E6CFF)],
+         begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+      borderRadius: BorderRadius.circular(32),
+       boxShadow: [
+        BoxShadow(
+          color: const Color(0xFF8E6CFF).withValues(alpha: 0.25),
+           blurRadius: 20,
+          offset: const Offset(0, 10),
+        ),
+      ],
+     ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(32),
+       child: Image.asset(
+        'assets/images/coco.jpeg',
+        fit: BoxFit.cover,
+         errorBuilder: (context, error, stackTrace) {
+          return const Center(
+            child: Icon(
+               Icons.quiz_outlined,
+              size: 54,
+              color: Colors.white,
+           ),
+           );
+            },
+              ),
+                ),
+                   ),
+                      ),        
+                      const SizedBox(height: 20),
                       Text(
                         'Questions amount: $_questionsCount',
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -90,7 +115,7 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                               fontWeight: FontWeight.w600,
                             ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           activeTrackColor: const Color(0xFF8E6CFF),
@@ -103,7 +128,6 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                           value: _questionsCount.toDouble(),
                           min: 5,
                           max: 30,
-                          divisions: 25,
                           label: _questionsCount.toString(),
                           onChanged: (value) {
                             setState(() {
@@ -112,7 +136,7 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                       const Text(
                         'Category',
                         style: TextStyle(
@@ -120,7 +144,7 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       _buildDropdown(
                         value: _selectedCategory,
                         items: _categories,
@@ -130,7 +154,7 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                           });
                         },
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       const Text(
                         'Difficulty',
                         style: TextStyle(
@@ -138,7 +162,7 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       _buildDropdown(
                         value: _selectedDifficulty,
                         items: _difficulties,
@@ -151,13 +175,14 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                       const Spacer(),
                       SizedBox(
                         width: double.infinity,
+                        height: 56,
                         child: FilledButton(
                           style: FilledButton.styleFrom(
-                            backgroundColor: const Color(0xFF5C3BFF),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            backgroundColor: const Color(0xFFFF5E87),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(18),
                             ),
+                            elevation: 0,
                           ),
                           onPressed: () {
                             Navigator.of(context).pushNamed(
@@ -170,11 +195,11 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
                             );
                           },
                           child: const Text(
-                            'START',
+                            'Старт',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -203,7 +228,7 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 18,
             offset: const Offset(0, 6),
           ),
@@ -228,4 +253,3 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
     );
   }
 }
-

@@ -1,9 +1,11 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:flutter_application_88/ui/pages/result_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_88/features/quiz/data/repositories/repository.dart';
 import 'package:flutter_application_88/features/quiz/presentation/cubit/quiz_cubit.dart';
-import 'ui/pages/quiz_home_page.dart';
-import 'ui/pages/quiz_setup_page.dart';
+import 'ui/pages/quiz_second_page.dart'; 
+import 'ui/pages/quiz_first_page.dart';  
+
 
 const Map<String, int?> categoryIds = {
   'All': null,
@@ -39,6 +41,7 @@ class QuizApp extends StatelessWidget {
       home: const QuizSetupPage(),
       routes: {
         '/setup': (context) => const QuizSetupPage(),
+        
         '/question': (context) {
           final dynamic args = ModalRoute.of(context)?.settings.arguments;
           if (args is! Map<String, dynamic>) {
@@ -56,11 +59,25 @@ class QuizApp extends StatelessWidget {
                 categoryId: categoryIds[category],
                 difficulty: difficultyValues[difficulty],
               ),
-            child: QuizHomePage(
+            child: QuizSecondPage(
               questionsCount: questionsCount,
               category: category,
               difficulty: difficulty,
             ),
+          );
+        },
+
+        '/result': (context) {
+          final dynamic args = ModalRoute.of(context)?.settings.arguments;
+          if (args is! Map<String, dynamic>) {
+            return const QuizSetupPage();
+          }
+
+          return QuizResultPage(
+            rightAnswers: args['rightAnswers'] ?? 0,
+            totalQuestions: args['totalQuestions'] ?? 10,
+            category: args['category'] ?? 'All',
+            percent: args['percent'] ?? 0,
           );
         },
       },
