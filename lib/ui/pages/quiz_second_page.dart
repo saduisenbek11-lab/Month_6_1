@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_88/ui/pages/history_page.dart';
 import 'package:flutter_application_88/ui/pages/result_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_88/features/quiz/data/models/harry_model.dart';
@@ -156,7 +157,11 @@ if (isLastQuestion)
         ),
       ),
       onPressed: () {
-        _finishQuiz(state);
+        Navigator.of(context).pushReplacement(
+  MaterialPageRoute(
+    builder: (_) => const HistoryPage(),
+  ),
+);
       },
       child: const Text(
         'Завершить',
@@ -179,62 +184,60 @@ if (isLastQuestion)
       ),
     );
   }
-
-  void _moveToNextQuestion(QuizState state) {
-    if (_currentQuestion < state.questions.length - 1) {
-      setState(() => _currentQuestion++);
-    } else {
-      _finishQuiz(state);
-    }
+void _moveToNextQuestion(QuizState state) {
+  if (_currentQuestion < state.questions.length - 1) {
+    setState(() => _currentQuestion++);
+  } else {
+    _finishQuiz(state);
   }
+}
+
 Future<void> _finishQuiz(QuizState state) async {
-    try {
-      final total = state.questions.length;
-      
-      final correct = state.questions.asMap().entries.where((entry) {
-        return _selectedAnswers[entry.key] == entry.value.correctAnswer;
-      }).length;
+  try {
+    final total = state.questions.length;
 
-      final percent = total > 0 ? ((correct / total) * 100).toInt() : 0;
+    final correct = state.questions
+        .asMap()
+        .entries
+        .where(
+          (entry) =>
+              _selectedAnswers[entry.key] ==
+              entry.value.correctAnswer,
+        )
+        .length;
 
-      try {
-      appDatabase.insertResult(
-  ResultsCompanion.insert(
-    category: widget.category,
-    difficulty: widget.difficulty.isEmpty
-        ? const Value.absent()
-        : Value(widget.difficulty),
-    totalQuestions: total,
-    correctAnswers: correct,
-  ),
-);
-      } catch (databaseError) {
-        debugPrint("!!! Ошибка базы данных Drift: $databaseError");
-      }
+    await appDatabase.insertResult(
+      ResultsCompanion.insert(
+        category: widget.category,
+        difficulty: widget.difficulty.isEmpty
+            ? const Value.absent()
+            : Value(widget.difficulty),
+        totalQuestions: total,
+        correctAnswers: correct,
+      ),
+    );
 
-      if (!mounted) return;
+    if (!mounted) return;
 
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => QuizResultPage(
-            rightAnswers: correct,
-            totalQuestions: total,
-            category: widget.category,
-            percent: percent,
-          ),
-        ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Критическая ошибка: $e'), 
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 5),
-        ),
-      );
-    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const HistoryPage(),
+      ),
+    );
+  } catch (e) {
+    debugPrint('Ошибка: $e');
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Ошибка: $e'),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
+}
   Widget _buildProgressBar(int questionsCount) {
     final progress = questionsCount > 0 ? (_currentQuestion + 1) / questionsCount : 0.0;
 

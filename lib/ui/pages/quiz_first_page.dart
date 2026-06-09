@@ -88,25 +88,18 @@ class _QuizSetupPageState extends State<QuizSetupPage> {
           offset: const Offset(0, 10),
         ),
       ],
-     ),
-    child: ClipRRect(
+     ),child: ClipRRect(
       borderRadius: BorderRadius.circular(32),
-       child: Image.asset(
-        'assets/images/coco.jpeg',
-        fit: BoxFit.cover,
-         errorBuilder: (context, error, stackTrace) {
-          return const Center(
-            child: Icon(
-               Icons.quiz_outlined,
-              size: 54,
+       child: const Center(
+         child: Icon(
+           Icons.quiz_outlined,
+            size: 54,
               color: Colors.white,
-           ),
-           );
-            },
               ),
-                ),
-                   ),
-                      ),        
+                  ),
+     ),
+         ),
+                      ),
                       const SizedBox(height: 20),
                       Text(
                         'Questions amount: $_questionsCount',
