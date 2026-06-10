@@ -147,31 +147,36 @@ class _QuizSecondPageState extends State<QuizSecondPage> {
 
 if (isLastQuestion)
   SizedBox(
-    width: 160,
-    height: 44,
-    child: FilledButton(
-      style: FilledButton.styleFrom(
-        backgroundColor: Colors.green,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
+  width: 160,
+  height: 44,
+  child: FilledButton(
+    style: FilledButton.styleFrom(
+      backgroundColor: Colors.green,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
       ),
-      onPressed: () {
-        Navigator.of(context).pushReplacement(
-  MaterialPageRoute(
-    builder: (_) => const HistoryPage(),
+    ),
+  onPressed: () {
+  print('BUTTON WORKS');
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const HistoryPage(),
+    ),
+  );
+
+  print('AFTER NAVIGATION');
+},
+    child: const Text(
+      'Завершить',
+      style: TextStyle(    
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
   ),
-);
-      },
-      child: const Text(
-        'Завершить',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      ),
-     ),
+),
         ],
          ),
           ),
@@ -191,31 +196,24 @@ void _moveToNextQuestion(QuizState state) {
     _finishQuiz(state);
   }
 }
-
 Future<void> _finishQuiz(QuizState state) async {
+  print('FINISH PRESSED');
+
   try {
-    final total = state.questions.length;
+    print('Before save');
 
-    final correct = state.questions
-        .asMap()
-        .entries
-        .where(
-          (entry) =>
-              _selectedAnswers[entry.key] ==
-              entry.value.correctAnswer,
-        )
-        .length;
-
-    await appDatabase.insertResult(
+    await AppDatabase.instance.insertResult(
       ResultsCompanion.insert(
         category: widget.category,
         difficulty: widget.difficulty.isEmpty
             ? const Value.absent()
             : Value(widget.difficulty),
-        totalQuestions: total,
-        correctAnswers: correct,
+        totalQuestions: state.questions.length,
+        correctAnswers: 0,
       ),
     );
+
+    print('After save');
 
     if (!mounted) return;
 
@@ -225,17 +223,9 @@ Future<void> _finishQuiz(QuizState state) async {
         builder: (_) => const HistoryPage(),
       ),
     );
-  } catch (e) {
-    debugPrint('Ошибка: $e');
-
-    if (!mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Ошибка: $e'),
-        backgroundColor: Colors.red,
-      ),
-    );
+  } catch (e, s) {
+    print('ERROR: $e');
+    print(s);
   }
 }
   Widget _buildProgressBar(int questionsCount) {

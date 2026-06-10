@@ -1,4 +1,4 @@
-import '../../domain/entities/quiz_config.dart';
+import 'package:flutter_application_88/features/quiz/domain/entities/quiz_config.dart';
 
 class QuizConfigModel extends QuizConfig {
   const QuizConfigModel({
@@ -29,9 +29,10 @@ class QuizConfigModel extends QuizConfig {
 
   factory QuizConfigModel.fromJson(Map<String, dynamic> json) {
     return QuizConfigModel(
-      questionsCount: json['questionsCount'] as int? ?? 10,
-      category: json['category'] as String? ?? 'All',
-      difficulty: json['difficulty'] as String? ?? 'All',
+      questionsCount: json['questionsCount'] ?? 10,
+      category: json['category'] ?? 'All',
+
+      difficulty: json['difficulty'] ?? 'easy',
     );
   }
 }
