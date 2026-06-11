@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:flutter_application_88/ui/pages/result_page.dart';
+import 'package:flutter_application_88/ui/pages/Navigator/main_navigation_page.dart';
+import 'package:flutter_application_88/ui/pages/Result/result_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_88/features/quiz/data/repositories/repository.dart';
 import 'package:flutter_application_88/features/quiz/presentation/cubit/quiz_cubit.dart';
@@ -38,11 +39,10 @@ class QuizApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const QuizSetupPage(),
-      routes: {
-        '/setup': (context) => const QuizSetupPage(),
-        
-        '/question': (context) {
+      home: const MainNavigationPage(), 
+routes: {
+  '/setup': (context) => const MainNavigationPage(),
+  '/question': (context) {
           final dynamic args = ModalRoute.of(context)?.settings.arguments;
           if (args is! Map<String, dynamic>) {
             return const QuizSetupPage();

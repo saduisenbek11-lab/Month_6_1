@@ -1,6 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_application_88/ui/pages/history_page.dart';
-import 'package:flutter_application_88/ui/pages/result_page.dart';
+import 'package:flutter_application_88/ui/pages/Result/result_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_88/features/quiz/data/models/harry_model.dart';
 import 'package:flutter_application_88/features/quiz/presentation/cubit/quiz_cubit.dart';
@@ -9,6 +9,7 @@ import 'package:drift/drift.dart' hide Column;
 
 const Map<String, int?> categoryIds = {'All': null, 'Math': 19, 'Science': 17, 'History': 23, 'Geography': 22};
 const Map<String, String?> difficultyValues = {'All': null, 'Easy': 'easy', 'Medium': 'medium', 'Hard': 'hard'};
+
 class QuizSecondPage extends StatefulWidget {
   final int questionsCount;
   final String category;
@@ -120,68 +121,54 @@ class _QuizSecondPageState extends State<QuizSecondPage> {
                           ...List.generate(_cachedAnswers.length, (index) {
                             return _buildAnswerButton(_cachedAnswers[index], state);
                           }),
-                           const SizedBox(height: 28),
+                          const SizedBox(height: 28),
                           if (!isLastQuestion)
-                           SizedBox(
-                           width: 160,
-                           height: 44,
-                       child: FilledButton(
-                         style: FilledButton.styleFrom(
-                           backgroundColor: const Color(0xFFFF5E87),
-                           shape: RoundedRectangleBorder(
-                         borderRadius: BorderRadius.circular(24),
-                        ),
+                            SizedBox(
+                              width: 160,
+                              height: 44,
+                              child: FilledButton(
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFF5E87),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                ),
+                                onPressed: () => _moveToNextQuestion(state),
+                                child: const Text(
+                                  'Следующий',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          if (isLastQuestion)
+                            SizedBox(
+                              width: 160,
+                              height: 44,
+                              child: FilledButton(
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                ),
+                                onPressed: () => _finishQuiz(state),
+                                child: const Text(
+                                  'Завершить',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
-                 onPressed: () {
-              _moveToNextQuestion(state);
-              },
-             child: const Text(
-          'Следующий',
-         style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-  ),
-
-if (isLastQuestion)
-  SizedBox(
-  width: 160,
-  height: 44,
-  child: FilledButton(
-    style: FilledButton.styleFrom(
-      backgroundColor: Colors.green,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
-    ),
-  onPressed: () {
-  print('BUTTON WORKS');
-
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const HistoryPage(),
-    ),
-  );
-
-  print('AFTER NAVIGATION');
-},
-    child: const Text(
-      'Завершить',
-      style: TextStyle(    
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  ),
-),
-        ],
-         ),
-          ),
-             ),
-             ],
+                  ),
+                ],
               );
             },
           ),
@@ -189,45 +176,51 @@ if (isLastQuestion)
       ),
     );
   }
-void _moveToNextQuestion(QuizState state) {
-  if (_currentQuestion < state.questions.length - 1) {
-    setState(() => _currentQuestion++);
-  } else {
-    _finishQuiz(state);
+  void _moveToNextQuestion(QuizState state) {
+    if (_currentQuestion < state.questions.length - 1) {
+      setState(() => _currentQuestion++);
+    } else {
+      _finishQuiz(state);
+    }
   }
-}
-Future<void> _finishQuiz(QuizState state) async {
-  print('FINISH PRESSED');
 
-  try {
-    print('Before save');
+  void _finishQuiz(QuizState state) {
+    final total = state.questions.length;
+    final correct = state.questions.asMap().entries.where((entry) {
+      return _selectedAnswers[entry.key] == entry.value.correctAnswer;
+    }).length;
+    final percent = total > 0 ? ((correct / total) * 100).toInt() : 0;
 
-    await AppDatabase.instance.insertResult(
+    AppDatabase.instance.insertResult(
       ResultsCompanion.insert(
         category: widget.category,
-        difficulty: widget.difficulty.isEmpty
+        difficulty: widget.difficulty.isEmpty || widget.difficulty == 'All'
             ? const Value.absent()
             : Value(widget.difficulty),
-        totalQuestions: state.questions.length,
-        correctAnswers: 0,
+        totalQuestions: total,
+        correctAnswers: correct,
       ),
-    );
-
-    print('After save');
+    ).catchError((error) {
+      print('Ошибка сохранения в Drift: $error');
+      return 0;
+    });
 
     if (!mounted) return;
 
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (_) => const HistoryPage(),
+        builder: (context) => QuizResultPage(
+          rightAnswers: correct,
+          totalQuestions: total,
+          category: widget.category,
+          percent: percent,
+        ),
       ),
+      (route) => false,
     );
-  } catch (e, s) {
-    print('ERROR: $e');
-    print(s);
   }
-}
+
   Widget _buildProgressBar(int questionsCount) {
     final progress = questionsCount > 0 ? (_currentQuestion + 1) / questionsCount : 0.0;
 
@@ -269,20 +262,25 @@ Future<void> _finishQuiz(QuizState state) async {
             elevation: 0,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           ),
-         onPressed: hasAnswered
-    ? null
-    : () {
-        setState(() {
-          _selectedAnswers[_currentQuestion] = answerText;
-        });
+          onPressed: hasAnswered
+              ? null
+              : () {
+                  setState(() {
+                    _selectedAnswers[_currentQuestion] = answerText;
+                  });
 
-        if (!(_currentQuestion >= state.questions.length - 1)) {
-          Future.delayed(const Duration(milliseconds: 600), () {
-            if (!mounted) return;
-            _moveToNextQuestion(state);
-          });
-        }
-      },
+                  if (_currentQuestion >= state.questions.length - 1) {
+                    Future.delayed(const Duration(milliseconds: 600), () {
+                      if (!mounted) return;
+                      _finishQuiz(state);
+                    });
+                  } else {
+                    Future.delayed(const Duration(milliseconds: 600), () {
+                      if (!mounted) return;
+                      _moveToNextQuestion(state);
+                    });
+                  }
+                },
           child: Text(
             answerText,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),

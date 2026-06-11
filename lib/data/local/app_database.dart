@@ -19,7 +19,6 @@ class Results extends Table {
   DateTimeColumn get takenAt =>
       dateTime().named('taken_at').withDefault(currentDateAndTime)();
 }
-
 @DriftDatabase(tables: [Results])
 class AppDatabase extends _$AppDatabase {
   AppDatabase._internal() : super(_openConnection());
@@ -35,6 +34,13 @@ class AppDatabase extends _$AppDatabase {
 
   Future<List<Result>> getAllResults() {
     return select(results).get();
+  }
+  Future<void> clearAllResults() {
+  return delete(results).go();
+}
+
+  Stream<List<Result>> watchAllResults() {
+    return select(results).watch();
   }
 }
 
