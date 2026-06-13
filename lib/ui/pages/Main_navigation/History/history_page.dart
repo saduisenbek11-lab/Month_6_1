@@ -53,7 +53,6 @@ class _HistoryPageState extends State<HistoryPage> {
 
                     final results = snapshot.data ?? [];
 
-                    // Если база пустая или еще проверяется — пишем, что пусто
                     if (results.isEmpty) {
                       return const Center(
                         child: Text(

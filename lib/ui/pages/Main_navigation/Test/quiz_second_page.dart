@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_88/ui/pages/Result/result_page.dart';
+import 'package:flutter_application_88/ui/pages/Main_navigation/Result/result_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_88/features/quiz/data/models/harry_model.dart';
 import 'package:flutter_application_88/features/quiz/presentation/cubit/quiz_cubit.dart';
@@ -176,6 +176,7 @@ class _QuizSecondPageState extends State<QuizSecondPage> {
       ),
     );
   }
+  
   void _moveToNextQuestion(QuizState state) {
     if (_currentQuestion < state.questions.length - 1) {
       setState(() => _currentQuestion++);
@@ -207,7 +208,7 @@ class _QuizSecondPageState extends State<QuizSecondPage> {
 
     if (!mounted) return;
 
-    Navigator.pushAndRemoveUntil(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => QuizResultPage(
@@ -215,9 +216,9 @@ class _QuizSecondPageState extends State<QuizSecondPage> {
           totalQuestions: total,
           category: widget.category,
           percent: percent,
-        ),
+        ),  
       ),
-      (route) => false,
+
     );
   }
 
@@ -255,38 +256,42 @@ class _QuizSecondPageState extends State<QuizSecondPage> {
       child: SizedBox(
         width: double.infinity,
         height: 56,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: bgColor,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          ),
-          onPressed: hasAnswered
-              ? null
-              : () {
-                  setState(() {
-                    _selectedAnswers[_currentQuestion] = answerText;
-                  });
-
-                  if (_currentQuestion >= state.questions.length - 1) {
-                    Future.delayed(const Duration(milliseconds: 600), () {
-                      if (!mounted) return;
-                      _finishQuiz(state);
-                    });
-                  } else {
-                    Future.delayed(const Duration(milliseconds: 600), () {
-                      if (!mounted) return;
-                      _moveToNextQuestion(state);
-                    });
-                  }
-                },
-          child: Text(
-            answerText,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      child: (_currentQuestion == state.questions.length - 1)
+    ? SizedBox(
+        width: 160,
+        height: 44,
+        child: FilledButton(
+          onPressed: () => _finishQuiz(state),
+          child: const Text('Завершить'),
+        ),
+      )
+    : ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bgColor,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
         ),
+        onPressed: hasAnswered
+            ? null
+            : () {
+                setState(() {
+                  _selectedAnswers[_currentQuestion] = answerText;
+                });
+
+                Future.delayed(const Duration(milliseconds: 600), () {
+                  if (!mounted) return;
+
+                  if (_currentQuestion < state.questions.length - 1) {
+                    _moveToNextQuestion(state);
+                  }
+                });
+              },
+        child: Text(answerText),
       ),
+      )
     );
   }
 }

@@ -1,11 +1,11 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:flutter_application_88/ui/pages/Navigator/main_navigation_page.dart';
-import 'package:flutter_application_88/ui/pages/Result/result_page.dart';
+import 'package:flutter_application_88/ui/pages/Main_navigation/main_navigation_page.dart';
+import 'package:flutter_application_88/ui/pages/Main_navigation/Result/result_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_88/features/quiz/data/repositories/repository.dart';
 import 'package:flutter_application_88/features/quiz/presentation/cubit/quiz_cubit.dart';
-import 'ui/pages/quiz_second_page.dart'; 
-import 'ui/pages/quiz_first_page.dart';  
+import 'ui/pages/Main_navigation/Test/quiz_second_page.dart'; 
+import 'ui/pages/Main_navigation/Main_list/quiz_first_page.dart';  
 
 
 const Map<String, int?> categoryIds = {
