@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "237787119920",
+    "project_id": "eatprojekt",
+    "storage_bucket": "eatprojekt.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237787119920:android:609700fda76858120448f5",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtCP2wQJWp6Xr8QtaGo_4LZ2j5vNh_mqk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
